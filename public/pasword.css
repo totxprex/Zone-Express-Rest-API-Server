@@ -1,0 +1,91 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f9fdff;
+}
+
+.login-main {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  height: 600px;
+  align-items: center;
+  gap: 70px;
+}
+
+.login-image {
+  width: 700px;
+  height: 600px;
+}
+
+.login_cont {
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px 2px rgb(168, 167, 167);
+  background-color: #fbfeff;
+  height: 500px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  animation: show 0.5s ease-in-out;
+  margin-left: 30%;
+}
+
+.login {
+  width: 255px;
+  height: 40px;
+  background-color: #80d8fd;
+  border-style: none;
+  border-radius: 5px;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.login_cont h3 {
+  opacity: 0.8;
+}
+
+.login_cont a {
+  opacity: 0.8;
+  font-size: small;
+  margin-top: 20px;
+}
+
+
+.login-logo {
+  width: 70px;
+  height: 70px;
+}
+
+.index-logo {
+  width: 50px;
+  height: 50px;
+  position: absolute;
+  left: 20px;
+  top: 20px;
+}
+
+
+.login-pass {
+  width: 400px;
+  height: 41px;
+  border-radius: 5px;
+  outline: none;
+  padding: 5px;
+  border: 1px solid rgba(99, 98, 98, 0.18);
+  opacity: 0.8;
+  transition: all 0.5s;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.login-pass:focus {
+  opacity: 1;
+  border: 1px solid #19b9ff;
+}
