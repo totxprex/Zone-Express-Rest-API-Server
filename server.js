@@ -13,7 +13,7 @@ let cors = require('cors')
 app.use(cors({
   methods: ["GET", "POST", "PUT", "PATCH"],
   credentials: true,
-  origin: "https://zonesocial.netlify.app"
+  origin: "*"
 }))
 
 let helmet = require('helmet')
