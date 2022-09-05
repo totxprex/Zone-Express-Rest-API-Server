@@ -8,18 +8,18 @@ dotenv.config({ path: "./config.env" })
 let morgan = require('morgan')
 app.use(morgan("dev"))
 
-let helmet = require('helmet')
-app.use(helmet())
-
-app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }))
-
 
 let cors = require('cors')
 app.use(cors({
   methods: ["GET", "POST", "PUT", "PATCH"],
   credentials: true,
-  origin: "*"
+  origin: "https://zonesocial.netlify.app"
 }))
+
+let helmet = require('helmet')
+app.use(helmet())
+
+app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }))
 
 const emails = require("./emailer.js")
 const html = require("./html.js")
