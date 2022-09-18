@@ -1,6 +1,6 @@
 'use strict'
 
-let serverURL = `http://127.0.0.3:5500`
+let serverURL = `https://zoneexpressserver.herokuapp.com`
 let token = document.location.href.split("=")[1]
 
 document.querySelector('.login').addEventListener("click", function (e) {
