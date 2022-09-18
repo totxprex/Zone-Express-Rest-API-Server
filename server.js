@@ -272,7 +272,7 @@ app.get("/pass/:key/:email", function (req, res) {
       from: "zone@gmail.com",
       to: req.params.email,
       subject: "Zone Password Reset",
-      html: emails.emitEmailHtml(`Here is your password reset link: <br> http://127.0.0.3:5500/reset?t=${token}`)
+      html: emails.emitEmailHtml(`Here is your password reset link: <br> https://zoneexpressserver.herokuapp.com/reset?t=${token}`)
     }
 
     emails.emailer(options)
