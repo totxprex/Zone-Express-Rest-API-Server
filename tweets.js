@@ -25,46 +25,6 @@ let responce = function (responceObj, status, data) {
 
 let tweetSapp = express.Router()
 
-//Create a tweet and upload tweet img if there
-tweetSapp.route("/create").post(upload.single("postPhoto"), function (req, res) {
-  if (!req.body) return errorResponce(res, "Internal Server Error")
-
-  let fileName = `tweet-${req.body.username}-${Date.now()}.jpeg`
-
-  if (req?.file?.buffer) {
-    sharp(req.file.buffer).resize(400, 300).toFormat("jpeg").jpeg({
-      quality: 90
-    }).toFile(`./public/tweet-images/${fileName}`).then(function () {
-      req.body.postPhoto = fileName
-      dbTweets.create(req.body).then(function (data) {
-        res.status(200).header({
-          "content-type": "application/json"
-        }).send({
-          status: "Tweet Created",
-          data: data
-        })
-      }).catch(function (err) {
-        errorResponce(res, err.message)
-      })
-    }).catch(function () {
-      errorResponce(res, "Internal Server Error")
-    })
-  }
-
-  else {
-    dbTweets.create(req.body).then(function (data) {
-      res.status(200).header({
-        "content-type": "application/json"
-      }).send({
-        status: "Tweet Created",
-        data: data
-      })
-    }).catch(function (err) {
-      errorResponce(res, err.message)
-    })
-  }
-})
-
 
 //retweet a tweet
 let tweetOwner
@@ -320,6 +280,126 @@ tweetSapp.get("/onetweet/:id", function (req, res) {
     errorResponce(res, err.message)
   })
 })
+
+
+
+
+
+
+
+
+
+
+// //Create a tweet and upload tweet img if there
+// tweetSapp.route("/create").post(upload.single("postPhoto"), function (req, res) {
+//   if (!req.body) return errorResponce(res, "Internal Server Error")
+
+//   let fileName = `tweet-${req.body.username}-${Date.now()}.jpeg`
+
+//   if (req?.file?.buffer) {
+//     sharp(req.file.buffer).resize(400, 300).toFormat("jpeg").jpeg({
+//       quality: 90
+//     }).toFile(`./public/tweet-images/${fileName}`).then(function () {
+//       req.body.postPhoto = fileName
+//       dbTweets.create(req.body).then(function (data) {
+//         res.status(200).header({
+//           "content-type": "application/json"
+//         }).send({
+//           status: "Tweet Created",
+//           data: data
+//         })
+//       }).catch(function (err) {
+//         errorResponce(res, err.message)
+//       })
+//     }).catch(function () {
+//       errorResponce(res, "Internal Server Error")
+//     })
+//   }
+
+//   else {
+//     dbTweets.create(req.body).then(function (data) {
+//       res.status(200).header({
+//         "content-type": "application/json"
+//       }).send({
+//         status: "Tweet Created",
+//         data: data
+//       })
+//     }).catch(function (err) {
+//       errorResponce(res, err.message)
+//     })
+//   }
+// })
+
+
+
+
+
+const { S3Client, PutObjectCommand, GetObjectCommand } = require("@aws-sdk/client-s3")
+
+const s3 = new S3Client({
+  credentials: {
+    accessKeyId: "AKIAWTRTNEBVEY3EUCWK",
+    secretAccessKey: "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"
+  },
+  region: "eu-west-3"
+})
+
+
+
+tweetSapp.route("/create").post(upload.single("postPhoto"), function (req, res) {
+  if (!req.body) return errorResponce(res, "Internal Server Error")
+
+  let fileName = `aws-tweet-${req.body.username}-${Date.now()}.jpeg`
+
+  if (req?.file?.buffer) {
+    try {
+      req.body.postPhoto = fileName
+
+      sharp(req.file.buffer).resize(400, 300).toFormat("jpeg").jpeg({
+        quality: 90
+      }).toBuffer().then(async function (buffer) {
+
+        const command = new PutObjectCommand({
+          Key: fileName,
+          Body: buffer,
+          Bucket: "zonee",
+          ContentType: req.file.mimetype
+        })
+
+        await s3.send(command)
+
+        await dbTweets.create(req.body)
+
+        res.status(200).header({
+          "content-type": "application/json"
+        }).send({
+          status: "Tweet Created"
+        })
+      })
+    }
+    catch (err) {
+      errorResponce(res, err.message)
+    }
+  }
+
+  else {
+    dbTweets.create(req.body).then(function (data) {
+      res.status(200).header({
+        "content-type": "application/json"
+      }).send({
+        status: "Tweet Created",
+        data: data
+      })
+    }).catch(function (err) {
+      errorResponce(res, err.message)
+    })
+  }
+
+})
+
+
+
+
 
 
 
